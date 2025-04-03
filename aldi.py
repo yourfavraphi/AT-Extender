@@ -18,11 +18,10 @@ LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
 UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0"
 HEADLESS = True
 
 def send_telegram_message(message, retries=3):
-    """ Sendet eine Nachricht über Telegram mit Wiederholungslogik """
     for attempt in range(retries):
         try:
             response = requests.post(TELEGRAM_URL, data={"chat_id": CHAT_ID, "text": message})
@@ -38,7 +37,6 @@ def send_telegram_message(message, retries=3):
     return False
 
 def wait_and_click(page, selector, timeout=5000, retries=5):
-    """ Wartet auf ein Element und klickt es, mit mehreren Versuchen """
     for attempt in range(retries):
         try:
             logging.info(f"Versuche, auf {selector} zu klicken (Versuch {attempt+1}/{retries})...")
@@ -52,7 +50,6 @@ def wait_and_click(page, selector, timeout=5000, retries=5):
     return False
 
 def login_and_check_data():
-    """ Loggt sich ein und prüft das verbleibende Datenvolumen """
     with sync_playwright() as p:
         for attempt in range(3):  # 3 Versuche, falls Playwright abstürzt
             try:
