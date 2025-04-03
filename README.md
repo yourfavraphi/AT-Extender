@@ -100,7 +100,7 @@ After=network.target
 User=ubuntu
 WorkingDirectory=/home/aldi/AT-Extender
 ExecStart=/home/ubuntu/venv/bin/python /home/aldi/AT-Extender/aldi.py
-Restart=always
+Restart=no
 
 [Install]
 WantedBy=multi-user.target
