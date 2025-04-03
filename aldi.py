@@ -136,5 +136,6 @@ if __name__ == "__main__":
     while True:
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
-        logging.info("Warte 5 Minuten bis zum nächsten Durchlauf...")
-        time.sleep(300)  # 5 Minuten warten
+        sleeptimer = random.randint(300, 500)
+        logging.info(f"Warte {sleeptimer} Sekunden  bis zum nächsten Durchlauf...")
+        time.sleep(sleeptimer)  # 5 Minuten warten
