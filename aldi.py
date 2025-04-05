@@ -2,6 +2,7 @@ import json
 import time
 import requests
 import logging
+import random
 from playwright.sync_api import sync_playwright, TimeoutError
 
 # Logging einrichten
