@@ -62,7 +62,7 @@ def compare_versions(local, remote):
 # Funktion, die auf Updates prüft
 def check_for_update():
     try:
-        print("🔍 Prüfe auf Updates...")
+        logging.info("🔍 Prüfe auf Updates...")
 
         # Abrufen der Versionsnummer von der URL
         response = requests.get(REMOTE_VERSION_URL)
@@ -77,25 +77,25 @@ def check_for_update():
         # Extrahiere die Remote-Version und vergleiche sie mit der lokalen
         remote_version = response.text.strip()
 
-        print(f"🔍 Lokale Version: {VERSION} | Remote Version: {remote_version}")
+        logging.info(f"🔍 Lokale Version: {VERSION} | Remote Version: {remote_version}")
 
         if compare_versions(VERSION, remote_version):
-            print(f"🚀 Neue Version verfügbar: {remote_version} (aktuell: {VERSION})")
+            logging.info(f"🚀 Neue Version verfügbar: {remote_version} (aktuell: {VERSION})")
             update = requests.get(REMOTE_SCRIPT_URL)
             if update.status_code == 200:
-                print("✅ Update wird heruntergeladen...")
+                logging.info("✅ Update wird heruntergeladen...")
                 # Skript aktualisieren
                 script_path = os.path.realpath(sys.argv[0])
                 with open(script_path, 'w', encoding='utf-8') as f:
                     f.write(update.text)
-                print("✅ Update erfolgreich! Starte neu...")
+                logging.info("✅ Update erfolgreich! Starte neu...")
                 os.execv(sys.executable, ['python'] + sys.argv)
             else:
-                print(f"❌ Fehler beim Herunterladen der neuen Version, Statuscode: {update.status_code}")
+                logging.info(f"❌ Fehler beim Herunterladen der neuen Version, Statuscode: {update.status_code}")
         else:
-            print("✅ Du verwendest die neueste Version.")
+            logging.info("✅ Du verwendest die neueste Version.")
     except Exception as e:
-        print(f"❌ Fehler beim Update-Check: {e}")
+        logging.info(f"❌ Fehler beim Update-Check: {e}")
 
 
 def wait_and_click(page, selector, timeout=5000, retries=5):
@@ -194,8 +194,8 @@ def login_and_check_data():
 if __name__ == "__main__":
     while True:
         check_for_update()  # Ruft die Update-Funktion auf
-        print(f"📦 Version {VERSION}")
-        print("✅ Hauptfunktion läuft...")
+        logging.info(f"📦 Version {VERSION}")
+        logging.info(f"✅ Hauptfunktion läuft...")
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
         sleeptimer = random.randint(300, 500)
