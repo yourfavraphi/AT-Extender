@@ -37,23 +37,27 @@ PASSWORT = config["PASSWORT"]
 BOT_TOKEN = config["BOT_TOKEN"]
 CHAT_ID = config["CHAT_ID"]
 AUTO_UPDATE = config["AUTO_UPDATE"]
+TELEGRAM = config["TELEGRAM"]
 TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
 
 def send_telegram_message(message, retries=3):
-    for attempt in range(retries):
-        try:
-            response = requests.post(TELEGRAM_URL, data={"chat_id": CHAT_ID, "text": message})
-            if response.status_code == 200:
-                logging.info("Telegram-Nachricht erfolgreich gesendet.")
-                return True
-            else:
-                logging.warning(f"Fehler beim Senden (Versuch {attempt+1}): {response.text}")
-        except Exception as e:
-            logging.error(f"Fehler beim Telegram-Senden (Versuch {attempt+1}): {e}")
-        time.sleep(2)
-    logging.error("Telegram konnte nicht erreicht werden.")
-    return False
+    if TELEGRAM == "1":
+        for attempt in range(retries):
+            try:
+                response = requests.post(TELEGRAM_URL, data={"chat_id": CHAT_ID, "text": message})
+                if response.status_code == 200:
+                    logging.info("Telegram-Nachricht erfolgreich gesendet.")
+                    return True
+                else:
+                    logging.warning(f"Fehler beim Senden (Versuch {attempt+1}): {response.text}")
+            except Exception as e:
+                logging.error(f"Fehler beim Telegram-Senden (Versuch {attempt+1}): {e}")
+            time.sleep(2)
+        logging.error("Telegram konnte nicht erreicht werden.")
+        return False
+    else:
+        print("Keine Telegram Notify erwünscht")
 
 # Funktion, um Versionen zu vergleichen (Versionen in Tupel umwandeln)
 def compare_versions(local, remote):
@@ -67,9 +71,6 @@ def check_for_update():
 
         # Abrufen der Versionsnummer von der URL
         response = requests.get(REMOTE_VERSION_URL)
-
-        # Debug-Ausgabe - Zeige den Inhalt der Antwort
-        print("🌐 Response Text:", response.text[:100])  # zeigt die ersten 100 Zeichen der Antwort
 
         if response.status_code != 200:
             print(f"⚠️  Konnte Versionsinfo nicht abrufen, Statuscode: {response.status_code}")
@@ -196,12 +197,11 @@ if __name__ == "__main__":
     while True:
         if AUTO_UPDATE == "1":
             check_for_update()  # Ruft die Update-Funktion auf
-            logging.info(f"📦 Version {VERSION}")
             logging.info(f"✅ Hauptfunktion läuft...")
         else:
-            logging.info(f"Kein Update erwünscht.")
+            logging.info(f"Kein AutoUpdate erwünscht.")
 
-        logging.info(f"📦 Version {VERSION}")
+
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
         sleeptimer = random.randint(300, 500)
