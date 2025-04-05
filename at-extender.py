@@ -3,24 +3,41 @@ import time
 import requests
 import logging
 import random
+import json
 from playwright.sync_api import sync_playwright, TimeoutError
 
 # Logging einrichten
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-# Konfigurationsvariablen
-RUFNUMMER = ""
-PASSWORT = ""
-BOT_TOKEN = ""
-CHAT_ID = ""
-TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-
 LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
 UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
+VERSION = "1.0.0"  # Deine aktuelle Version
+
+REMOTE_VERSION_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/version.txt"  # Link zur Version
+REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/at-extender.py"  # Link zum neuesten Skript
+
+
+
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0"
 HEADLESS = True
+
+# Konfiguration aus der config.json Datei laden
+def load_config():
+    with open("config.json", "r") as f:
+        config = json.load(f)
+    return config
+
+# Konfigurationsvariablen aus der JSON-Datei laden
+config = load_config()
+
+RUFNUMMER = config["RUFNUMMER"]
+PASSWORT = config["PASSWORT"]
+BOT_TOKEN = config["BOT_TOKEN"]
+CHAT_ID = config["CHAT_ID"]
+TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+
 
 def send_telegram_message(message, retries=3):
     for attempt in range(retries):
@@ -36,6 +53,50 @@ def send_telegram_message(message, retries=3):
         time.sleep(2)
     logging.error("Telegram konnte nicht erreicht werden.")
     return False
+
+# Funktion, um Versionen zu vergleichen (Versionen in Tupel umwandeln)
+def compare_versions(local, remote):
+    def to_tuple(v): return tuple(map(int, v.strip().split(".")))
+    return to_tuple(remote) > to_tuple(local)
+
+# Funktion, die auf Updates prüft
+def check_for_update():
+    try:
+        print("🔍 Prüfe auf Updates...")
+
+        # Abrufen der Versionsnummer von der URL
+        response = requests.get(REMOTE_VERSION_URL)
+
+        # Debug-Ausgabe - Zeige den Inhalt der Antwort
+        print("🌐 Response Text:", response.text[:100])  # zeigt die ersten 100 Zeichen der Antwort
+
+        if response.status_code != 200:
+            print(f"⚠️  Konnte Versionsinfo nicht abrufen, Statuscode: {response.status_code}")
+            return
+
+        # Extrahiere die Remote-Version und vergleiche sie mit der lokalen
+        remote_version = response.text.strip()
+
+        print(f"🔍 Lokale Version: {VERSION} | Remote Version: {remote_version}")
+
+        if compare_versions(VERSION, remote_version):
+            print(f"🚀 Neue Version verfügbar: {remote_version} (aktuell: {VERSION})")
+            update = requests.get(REMOTE_SCRIPT_URL)
+            if update.status_code == 200:
+                print("✅ Update wird heruntergeladen...")
+                # Skript aktualisieren
+                script_path = os.path.realpath(sys.argv[0])
+                with open(script_path, 'w', encoding='utf-8') as f:
+                    f.write(update.text)
+                print("✅ Update erfolgreich! Starte neu...")
+                os.execv(sys.executable, ['python'] + sys.argv)
+            else:
+                print(f"❌ Fehler beim Herunterladen der neuen Version, Statuscode: {update.status_code}")
+        else:
+            print("✅ Du verwendest die neueste Version.")
+    except Exception as e:
+        print(f"❌ Fehler beim Update-Check: {e}")
+
 
 def wait_and_click(page, selector, timeout=5000, retries=5):
     for attempt in range(retries):
@@ -115,7 +176,7 @@ def login_and_check_data():
                         raise Exception("❌ Konnte den Nachbuchungsbutton nicht klicken!")
 
                 else:
-                    send_telegram_message(f"✅ Noch {GB:.2f} GB übrig. Kein Nachbuchen erforderlich.")
+                    send_telegram_message(f"✅ TEST: Noch {GB:.2f} GB übrig. Kein Nachbuchen erforderlich.")
 
                 return  # Erfolgreicher Durchlauf, keine Wiederholung nötig
 
@@ -132,6 +193,9 @@ def login_and_check_data():
 
 if __name__ == "__main__":
     while True:
+        check_for_update()  # Ruft die Update-Funktion auf
+        print(f"📦 Version {VERSION}")
+        print("✅ Hauptfunktion läuft...")
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
         sleeptimer = random.randint(300, 500)
