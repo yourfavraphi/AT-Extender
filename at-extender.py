@@ -14,7 +14,7 @@ LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
 UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
-VERSION = "1.0.4"  # Deine aktuelle Version
+VERSION = "1.0.5"  # Deine aktuelle Version
 
 REMOTE_VERSION_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/version.txt"  # Link zur Version
 REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/at-extender.py"  # Link zum neuesten Skript
@@ -73,16 +73,12 @@ def check_for_update():
         try:
             logging.info("🔍 Prüfe auf Updates...")
 
-            # Abrufen der Versionsnummer von der URL
             response = requests.get(REMOTE_VERSION_URL)
-
             if response.status_code != 200:
                 print(f"⚠️  Konnte Versionsinfo nicht abrufen, Statuscode: {response.status_code}")
                 return
 
-            # Extrahiere die Remote-Version und vergleiche sie mit der lokalen
             remote_version = response.text.strip()
-
             logging.info(f"🔍 Lokale Version: {VERSION} | Remote Version: {remote_version}")
 
             if compare_versions(VERSION, remote_version):
@@ -90,19 +86,20 @@ def check_for_update():
                 update = requests.get(REMOTE_SCRIPT_URL)
                 if update.status_code == 200:
                     logging.info("✅ Update wird heruntergeladen...")
-                    # Skript aktualisieren
                     script_path = os.path.realpath(sys.argv[0])
                     with open(script_path, 'w', encoding='utf-8') as f:
                         f.write(update.text)
                     logging.info("✅ Update erfolgreich! Starte neu...")
-                    os.execv(sys.executable, ['python'] + sys.argv)
+
+                    # Universeller Neustart – funktioniert mit venv & system-python
+                    os.execv(sys.executable, [sys.executable] + sys.argv)
+
                 else:
                     logging.info(f"❌ Fehler beim Herunterladen der neuen Version, Statuscode: {update.status_code}")
             else:
                 logging.info("✅ Du verwendest die neueste Version.")
         except Exception as e:
             logging.info(f"❌ Fehler beim Update-Check: {e}")
-
     else:
         logging.info(f"Kein AutoUpdate erwünscht.")
 
