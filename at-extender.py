@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import time
 import requests
@@ -5,10 +6,13 @@ import logging
 import random
 import os
 import sys
+import io
 from playwright.sync_api import sync_playwright, TimeoutError
 
 # Logging einrichten
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
