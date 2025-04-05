@@ -77,7 +77,7 @@ Erstelle eine Datei namens `config.json` im gleichen Verzeichnis wie das Skript 
 
 | Schlüssel        | Beschreibung                                                                 |
 |------------------|------------------------------------------------------------------------------|
-| `RUFNUMMER`       | Deine ALDI TALK Nummer (ohne +49, aber mit führender 49)                   |
+| `RUFNUMMER`       | Deine ALDI TALK Nummer (mit 0 am Anfang)                   |
 | `PASSWORT`        | Dein Kundenportal-Passwort                                                  |
 | `BOT_TOKEN`       | Telegram-Bot-Token von [@BotFather](https://t.me/BotFather)                 |
 | `CHAT_ID`         | Deine Telegram-Chat-ID (z. B. via [@userinfobot](https://t.me/userinfobot)) |
