@@ -5,5 +5,6 @@
   "BOT_TOKEN": "DeinTelegramBotToken",
   "CHAT_ID": "DeineChatID",
   "AUTO_UPDATE": "1",
-  "INTERVALL": "500"
+  "SLEEP_MODE": "random",
+  "SLEEP_INTERVAL": "70"
 }
