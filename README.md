@@ -1,183 +1,167 @@
-# AT-Extender
+# 🚀 ALDI TALK Datenvolumen-Überwachung & Auto-Update Bot
 
-## 🛠️ Setup-Anleitung
-
-AT-Extender ist ein Python-Skript, das automatisch das verbleibende Datenvolumen eines Aldi Talk Tarifs überprüft und bei Bedarf über das Kundenportal nachbucht. Die Benachrichtigung erfolgt über Telegram.
+Ein vollautomatisiertes Python-Skript zur Überwachung des verfügbaren ALDI TALK Datenvolumens. Bei Unterschreitung von 1 GB wird automatisch ein Nachbuchen versucht und eine Telegram-Benachrichtigung gesendet. Optional mit **Auto-Update**, **Sleep-Modus**, **Telegram-Support** und mehr.
 
 ---
 
-## ✅ Voraussetzungen
+## ✅ Features
 
-### 1. Allgemeine Anforderungen
-- **Python 3.8 oder höher** muss installiert sein.
-- **Playwright** muss installiert sein.
-- Eine **Aldi Talk Rufnummer & Passwort**.
-- Ein **Telegram-Bot Token & Chat-ID** für Benachrichtigungen.
-
-### 2. Betriebssystemspezifische Abhängigkeiten
-
-#### **Linux/macOS**
-```bash
-# Systemabhängigkeiten installieren (Debian/Ubuntu)
-sudo apt update && sudo apt install -y python3 python3-pip unzip
-
-# Optional für macOS
-brew install python3 unzip
-```
-
-#### **Windows**
-1. **[Python 3.8+](https://www.python.org/downloads/)** installieren.
-2. Während der Installation **"Add Python to PATH"** aktivieren.
-3. Playwright erfordert zusätzliche Bibliotheken, die automatisch installiert werden.
+- 🔍 Überwacht automatisch dein verbleibendes Datenvolumen
+- ↻ Versucht automatische Nachbuchung bei < 1 GB
+- 🔔 Sendet Benachrichtigungen über Telegram
+- ♻️ Vollautomatischer Auto-Update-Mechanismus
+- 🧠 Unterstützt zufällige oder feste Ausführungsintervalle
+- 🧪 Entwickelt mit Playwright & Headless-Browser
+- 🛠 Einfache Konfiguration via `config.json`
 
 ---
 
-## 🎯 Installation
+## 🛠️ Voraussetzungen
 
-### **1. Repository klonen**
+- Python **3.8 oder höher**
+- Git (zum Klonen des Repositories)
+- Playwright & Browser-Binaries
+
+---
+
+## 🚀 Einrichtung (einmalig)
+
+### 1. Repository klonen
+
 ```bash
 git clone https://github.com/Dinobeiser/AT-Extender.git
 cd AT-Extender
 ```
 
-### **2. Virtuelle Umgebung erstellen und aktivieren**
+### 2. Python venv & Abhängigkeiten installieren
 
-#### **Linux/macOS**
 ```bash
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-#### **Windows (CMD/Powershell)**
-```powershell
-python -m venv venv
-venv\Scripts\activate
-```
-
-### **3. Abhängigkeiten installieren**
+> Falls `requirements.txt` fehlt:
 ```bash
 pip install playwright requests
+```
+
+### 3. Playwright-Umgebung initialisieren
+
+```bash
 playwright install
 ```
+
+> Dies lädt automatisch die nötigen Browser (Chromium etc.).
 
 ---
 
 ## ⚙️ Konfiguration
 
-Öffne das Skript `aldi.py` und editiere die folgenden Variablen mit deinen Zugangsdaten:
+Erstelle eine Datei namens `config.json` im gleichen Verzeichnis wie das Skript und trage deine Daten wie folgt ein:
 
-```python
-RUFNUMMER = "DeineRufnummer"
-PASSWORT = "DeinPasswort"
-BOT_TOKEN = "DeinTelegramBotToken"
-CHAT_ID = "DeineChatID"
+```json
+{
+  "RUFNUMMER": "DeineRufnummer",
+  "PASSWORT": "DeinPasswort",
+  "TELEGRAM": "0",
+  "BOT_TOKEN": "DeinTelegramBotToken",
+  "CHAT_ID": "DeineChatID",
+  "AUTO_UPDATE": "1",
+  "SLEEP_MODE": "random",
+  "SLEEP_INTERVAL": "70"
+}
+```
+
+### Felder erklärt:
+
+| Schlüssel        | Beschreibung                                                                 |
+|------------------|------------------------------------------------------------------------------|
+| `RUFNUMMER`       | Deine ALDI TALK Nummer (ohne +49, aber mit führender 49)                   |
+| `PASSWORT`        | Dein Kundenportal-Passwort                                                  |
+| `BOT_TOKEN`       | Telegram-Bot-Token von [@BotFather](https://t.me/BotFather)                 |
+| `CHAT_ID`         | Deine Telegram-Chat-ID (z. B. via [@userinfobot](https://t.me/userinfobot)) |
+| `AUTO_UPDATE`     | `1` für Auto-Update aktivieren, `0` für deaktivieren                        |
+| `TELEGRAM`        | `1` für Telegram-Nachrichten, `0` für deaktivieren                          |
+| `SLEEP_MODE`      | `"random"` oder `"fixed"`                                                   |
+| `SLEEP_INTERVAL`  | Intervall in Sekunden (nur relevant bei `"fixed"`), **min. 70 Sekunden**    |
+
+---
+
+## 🔄 Automatisches Update
+
+Wenn `AUTO_UPDATE` auf `1` gesetzt ist, prüft das Skript bei jedem Start automatisch auf Updates aus dem GitHub-Repo:
+
+- Neue Version? → Skript wird **automatisch ersetzt** und **neu gestartet**!
+
+> Hinweis: Das Skript muss **Schreibrechte** im eigenen Verzeichnis haben. Falls nötig:
+```bash
+chmod +x at-extender.py
 ```
 
 ---
 
-## ⚡ Nutzung
+## 🥪 Skript starten
 
-### **Manuell starten**
 ```bash
-python aldi.py
+python at-extender.py
 ```
 
-### **Automatischer Start bei Systemneustart**
+> 💡 Du kannst das Skript auch als `nohup`, `screen`, `tmux` oder Hintergrundprozess laufen lassen, z. B.:
 
-#### **Linux/macOS (via systemd)**
-1. **Service-Datei erstellen:**
 ```bash
-nano /etc/systemd/system/aldi.service
+nohup python at-extender.py &
 ```
-
-2. **Folgendes einfügen:**
-```ini
-[Unit]
-Description=Aldi Talk Datenautomatisierung
-After=network.target
-
-[Service]
-User=ubuntu
-WorkingDirectory=/home/aldi/AT-Extender
-ExecStart=/home/ubuntu/venv/bin/python /home/aldi/AT-Extender/aldi.py
-Restart=no
-
-[Install]
-WantedBy=multi-user.target
-```
-
-3. **Service aktivieren & starten:**
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable aldi.service
-sudo systemctl start aldi.service
-```
-
-4. **Status überprüfen:**
-```bash
-sudo systemctl status aldi.service
-```
-
-#### **Windows (via Task Scheduler)**
-1. **Task Scheduler öffnen** (`taskschd.msc` im Startmenü eingeben).
-2. **Neuen Task erstellen** → Name vergeben (`AT-Extender`).
-3. **Trigger:** "Bei Systemstart" auswählen.
-4. **Aktion:** "Programm starten" → `C:\Pfad\zu\python.exe C:\Pfad\zu\aldi.py`
-5. **OK klicken und testen.**
 
 ---
 
-## 🛡️ Überwachung & Neustart bei Abstürzen
+## ⏱ Automatisch beim Systemstart (optional)
 
-### **Linux/macOS (Watchdog mit `cron` und `screen`)**
-1. **Script für Neustart erstellen:**
-```bash
-echo '#!/bin/bash
-if ! pgrep -f "aldi.py" > /dev/null; then
-    screen -dmS aldi /home/ubuntu/venv/bin/python /home/aldi/AT-Extender/aldi.py
-fi' > /home/aldi/watchdog.sh
-chmod +x /home/aldi/watchdog.sh
-```
+Du kannst das Skript z. B. via `crontab`, `systemd` oder Autostart in Windows/Linux automatisch starten lassen. Beispiel mit `crontab`:
 
-2. **In `crontab` eintragen:**
 ```bash
 crontab -e
 ```
-Füge am Ende hinzu:
-```bash
-* * * * * /home/aldi/watchdog.sh
-```
 
-Damit wird das Skript **jede Minute überprüft** und falls es nicht läuft, neu gestartet.
-
-### **Windows (via Task Scheduler & Batch-Skript)**
-1. **Batch-Skript erstellen (`watchdog.bat`)**
-```batch
-@echo off
-tasklist | findstr /I "python.exe" >nul || start "" python.exe C:\Pfad\zu\aldi.py"
-```
-2. **Task erstellen (wie oben, aber alle 5 Min starten).**
-
----
-
-## ⏰ Automatischer Neustart des Servers um 3 Uhr nachts
-
-#### **Linux/macOS**
-```bash
-sudo crontab -e
-```
-Füge hinzu:
-```bash
-0 3 * * * /sbin/shutdown -r now
-```
-
-#### **Windows**
-```powershell
-schtasks /create /tn "Reboot" /tr "shutdown /r /f /t 0" /sc daily /st 03:00
+```cron
+@reboot /pfad/zu/deinem/venv/python /pfad/zum/at-extender.py
 ```
 
 ---
 
-## 🐝 Feedback & Verbesserungen
-Falls du Verbesserungsvorschläge hast oder Fehler findest, öffne ein Issue auf GitHub oder erstelle einen Pull Request! 🎉
+## 🚇 Problembehandlung
+
+### ❌ `playwright` Fehler beim ersten Start?
+
+```bash
+playwright install
+```
+
+### ❌ Skript wird nicht neu gestartet nach Update?
+
+Stelle sicher, dass das Skript ausführbar ist:
+```bash
+chmod +x at-extender.py
+```
+
+### ❌ Telegram funktioniert nicht?
+
+- Prüfe dein `BOT_TOKEN` & `CHAT_ID`
+- Stelle sicher, dass dein Bot **dir schreiben darf**
+- Teste mit curl:
+```bash
+curl -X POST "https://api.telegram.org/bot<DEIN_TOKEN>/sendMessage" -d "chat_id=<DEINE_ID>&text=Testnachricht"
+```
+
+---
+
+## 🤝 Mithelfen
+
+Verbesserungen, Fehlerberichte oder Pull Requests sind herzlich willkommen!
+
+---
+
+## 📜 Lizenz
+
+MIT License – free to use and modify.
 
