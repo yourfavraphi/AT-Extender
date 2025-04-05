@@ -36,6 +36,7 @@ RUFNUMMER = config["RUFNUMMER"]
 PASSWORT = config["PASSWORT"]
 BOT_TOKEN = config["BOT_TOKEN"]
 CHAT_ID = config["CHAT_ID"]
+AUTO_UPDATE = config["AUTO_UPDATE"]
 TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
 
@@ -193,9 +194,14 @@ def login_and_check_data():
 
 if __name__ == "__main__":
     while True:
-        check_for_update()  # Ruft die Update-Funktion auf
+        if AUTO_UPDATE == "1":
+            check_for_update()  # Ruft die Update-Funktion auf
+            logging.info(f"📦 Version {VERSION}")
+            logging.info(f"✅ Hauptfunktion läuft...")
+        else:
+            logging.info(f"Kein Update erwünscht.")
+
         logging.info(f"📦 Version {VERSION}")
-        logging.info(f"✅ Hauptfunktion läuft...")
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
         sleeptimer = random.randint(300, 500)
