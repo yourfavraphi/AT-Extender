@@ -13,7 +13,7 @@ LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
 UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
-VERSION = "1.0.1"  # Deine aktuelle Version
+VERSION = "1.0.2"  # Deine aktuelle Version
 
 REMOTE_VERSION_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/version.txt"  # Link zur Version
 REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/at-extender.py"  # Link zum neuesten Skript
@@ -36,7 +36,9 @@ BOT_TOKEN = config["BOT_TOKEN"]
 CHAT_ID = config["CHAT_ID"]
 AUTO_UPDATE = config["AUTO_UPDATE"]
 TELEGRAM = config["TELEGRAM"]
-INTERVALL = config["INTERVALL"]
+SLEEP_MODE = config["SLEEP_MODE"]
+SLEEP_INTERVAL = config["SLEEP_INTERVAL"]
+
 
 TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
@@ -196,11 +198,28 @@ def login_and_check_data():
             time.sleep(5)  # Kurze Pause zwischen Wiederholungen
         logging.error("Skript hat nach 3 Versuchen aufgegeben.")
 
+def sleep_interval(config):
+    mode = config.get("SLEEP_MODE", "random")  # "fixed" oder "random"
+
+    if mode == "fixed":
+        # Hole den Wert für das feste Intervall aus der config.json
+        interval = config.get("SLEEP_INTERVAL", 70)  # Standard auf 70 Sekunden, wenn nicht gesetzt
+        if interval < 60:
+            print("⚠️ Intervall zu kurz, auf 90 Sekunden gesetzt.")
+            interval = 90  # Mindestintervall von 90 Sekunden
+    elif mode == "random":
+        # Wenn SLEEP_MODE = random, dann zufälliger Wert zwischen 300 und 500 Sekunden
+        interval = random.randint(300, 500)
+    else:
+        print("⚠️ Ungültiger SLEEP_MODE, verwende Standard 'random'.")
+        interval = random.randint(300, 500)  # Standard zufälliger Wert zwischen 300 und 500 Sekunden
+
+    logging.info(f"💤 Warte {interval} Sekunden...")
+    time.sleep(interval)
+
 if __name__ == "__main__":
     while True:
         check_for_update()  # Ruft die Update-Funktion auf
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
-        sleeptimer = sleeptimer = random.randint(300, 500)
-        logging.info(f"Warte {sleeptimer} Sekunden  bis zum nächsten Durchlauf...")
-        time.sleep(sleeptimer)  # 5 Minuten warten
+        sleep_interval(config)
