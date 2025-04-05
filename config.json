@@ -2,5 +2,6 @@
   "RUFNUMMER": "DeineRufnummer",
   "PASSWORT": "DeinPasswort",
   "BOT_TOKEN": "DeinTelegramBotToken",
-  "CHAT_ID": "DeineChatID"
+  "CHAT_ID": "DeineChatID",
+  "AUTO_UPDATE": "1"
 }
