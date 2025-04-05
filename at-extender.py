@@ -177,7 +177,7 @@ def login_and_check_data():
                         raise Exception("❌ Konnte den Nachbuchungsbutton nicht klicken!")
 
                 else:
-                    send_telegram_message(f"✅ TEST: Noch {GB:.2f} GB übrig. Kein Nachbuchen erforderlich.")
+                    send_telegram_message(f"✅ Noch {GB:.2f} GB übrig. Kein Nachbuchen erforderlich.")
 
                 return  # Erfolgreicher Durchlauf, keine Wiederholung nötig
 
