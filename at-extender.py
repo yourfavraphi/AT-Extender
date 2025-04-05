@@ -13,12 +13,10 @@ LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
 UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
-VERSION = "1.0.0"  # Deine aktuelle Version
+VERSION = "1.0.1"  # Deine aktuelle Version
 
 REMOTE_VERSION_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/version.txt"  # Link zur Version
 REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/at-extender.py"  # Link zum neuesten Skript
-
-
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0"
 HEADLESS = True
@@ -38,6 +36,8 @@ BOT_TOKEN = config["BOT_TOKEN"]
 CHAT_ID = config["CHAT_ID"]
 AUTO_UPDATE = config["AUTO_UPDATE"]
 TELEGRAM = config["TELEGRAM"]
+INTERVALL = config["INTERVALL"]
+
 TELEGRAM_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
 
@@ -66,39 +66,42 @@ def compare_versions(local, remote):
 
 # Funktion, die auf Updates prüft
 def check_for_update():
-    try:
-        logging.info("🔍 Prüfe auf Updates...")
+    if AUTO_UPDATE == "1":
+        try:
+            logging.info("🔍 Prüfe auf Updates...")
 
-        # Abrufen der Versionsnummer von der URL
-        response = requests.get(REMOTE_VERSION_URL)
+            # Abrufen der Versionsnummer von der URL
+            response = requests.get(REMOTE_VERSION_URL)
 
-        if response.status_code != 200:
-            print(f"⚠️  Konnte Versionsinfo nicht abrufen, Statuscode: {response.status_code}")
-            return
+            if response.status_code != 200:
+                print(f"⚠️  Konnte Versionsinfo nicht abrufen, Statuscode: {response.status_code}")
+                return
 
-        # Extrahiere die Remote-Version und vergleiche sie mit der lokalen
-        remote_version = response.text.strip()
+            # Extrahiere die Remote-Version und vergleiche sie mit der lokalen
+            remote_version = response.text.strip()
 
-        logging.info(f"🔍 Lokale Version: {VERSION} | Remote Version: {remote_version}")
+            logging.info(f"🔍 Lokale Version: {VERSION} | Remote Version: {remote_version}")
 
-        if compare_versions(VERSION, remote_version):
-            logging.info(f"🚀 Neue Version verfügbar: {remote_version} (aktuell: {VERSION})")
-            update = requests.get(REMOTE_SCRIPT_URL)
-            if update.status_code == 200:
-                logging.info("✅ Update wird heruntergeladen...")
-                # Skript aktualisieren
-                script_path = os.path.realpath(sys.argv[0])
-                with open(script_path, 'w', encoding='utf-8') as f:
-                    f.write(update.text)
-                logging.info("✅ Update erfolgreich! Starte neu...")
-                os.execv(sys.executable, ['python'] + sys.argv)
+            if compare_versions(VERSION, remote_version):
+                logging.info(f"🚀 Neue Version verfügbar: {remote_version} (aktuell: {VERSION})")
+                update = requests.get(REMOTE_SCRIPT_URL)
+                if update.status_code == 200:
+                    logging.info("✅ Update wird heruntergeladen...")
+                    # Skript aktualisieren
+                    script_path = os.path.realpath(sys.argv[0])
+                    with open(script_path, 'w', encoding='utf-8') as f:
+                        f.write(update.text)
+                    logging.info("✅ Update erfolgreich! Starte neu...")
+                    os.execv(sys.executable, ['python'] + sys.argv)
+                else:
+                    logging.info(f"❌ Fehler beim Herunterladen der neuen Version, Statuscode: {update.status_code}")
             else:
-                logging.info(f"❌ Fehler beim Herunterladen der neuen Version, Statuscode: {update.status_code}")
-        else:
-            logging.info("✅ Du verwendest die neueste Version.")
-    except Exception as e:
-        logging.info(f"❌ Fehler beim Update-Check: {e}")
+                logging.info("✅ Du verwendest die neueste Version.")
+        except Exception as e:
+            logging.info(f"❌ Fehler beim Update-Check: {e}")
 
+    else:
+        logging.info(f"Kein AutoUpdate erwünscht.")
 
 def wait_and_click(page, selector, timeout=5000, retries=5):
     for attempt in range(retries):
@@ -195,15 +198,10 @@ def login_and_check_data():
 
 if __name__ == "__main__":
     while True:
-        if AUTO_UPDATE == "1":
-            check_for_update()  # Ruft die Update-Funktion auf
-            logging.info(f"✅ Hauptfunktion läuft...")
-        else:
-            logging.info(f"Kein AutoUpdate erwünscht.")
-
-
+        check_for_update()  # Ruft die Update-Funktion auf
+        logging.info(f"✅ Hauptfunktion läuft...")
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
-        sleeptimer = random.randint(300, 500)
+        sleeptimer = sleeptimer = random.randint(300, 500)
         logging.info(f"Warte {sleeptimer} Sekunden  bis zum nächsten Durchlauf...")
         time.sleep(sleeptimer)  # 5 Minuten warten
