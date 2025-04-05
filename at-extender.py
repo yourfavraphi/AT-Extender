@@ -199,7 +199,6 @@ def login_and_check_data():
 if __name__ == "__main__":
     while True:
         check_for_update()  # Ruft die Update-Funktion auf
-        logging.info(f"✅ Hauptfunktion läuft...")
         logging.info("Starte neuen Durchlauf...")
         login_and_check_data()
         sleeptimer = sleeptimer = random.randint(300, 500)
