@@ -18,7 +18,7 @@ LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
 UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
-VERSION = "1.0.7"  # Deine aktuelle Version
+VERSION = "1.0.8"  # Deine aktuelle Version
 
 REMOTE_VERSION_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/version.txt"  # Link zur Version
 REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/at-extender.py"  # Link zum neuesten Skript
@@ -136,8 +136,8 @@ def login_and_check_data():
                 wait_and_click(page, 'button[data-testid="uc-deny-all-button"]')
 
                 logging.info("Fülle Login-Daten aus...")
-                page.fill('#input-2', RUFNUMMER)
-                page.fill('#input-3', PASSWORT)
+                page.fill('#input-5', RUFNUMMER)
+                page.fill('#input-6', PASSWORT)
 
                 if not wait_and_click(page, '[class="button button--solid button--medium button--color-default button--has-label"]'):
                     raise Exception("Login-Button konnte nicht geklickt werden.")
