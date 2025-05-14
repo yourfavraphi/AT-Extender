@@ -172,9 +172,6 @@ Verbesserungen, Fehlerberichte oder Pull Requests sind herzlich willkommen!
 ---
 ## 💜 Unterstützung & Spenden
 
-
-Du nutzt AT-Extender regelmäßig?
-
 Wenn du das Projekt unterstützen möchtest, lass gerne eine Spende da:
 
 BTC: bc1q7rddem4wm6ryp3vqtrkxjq427qyy5yuckku90g
