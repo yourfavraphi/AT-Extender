@@ -3,6 +3,18 @@
 Ein vollautomatisiertes Python-Skript zur Überwachung des verfügbaren ALDI TALK Datenvolumens. Bei Unterschreitung von 1 GB wird automatisch ein Nachbuchen versucht und eine Telegram-Benachrichtigung gesendet. Optional mit **Auto-Update**, **Sleep-Modus**, **Telegram-Support** und mehr.
 
 ---
+📢 Updates, Hilfe & Community
+
+🔔 Info-Kanal: @ATExtender_infocenter
+Erfahre dort alles zu Updates, Änderungen und Ankündigungen.
+
+👥 Nutzergruppe: @ATExtender_Usergroup
+Tausche dich mit anderen Nutzern aus, teile Erfahrungen oder stelle Fragen.
+
+🧑‍💻 Support/Entwickler: @CodyMeal
+Fragen oder Probleme? Schreib mir gern direkt!
+
+---
 
 ## ✅ Features
 
