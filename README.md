@@ -173,19 +173,16 @@ Verbesserungen, Fehlerberichte oder Pull Requests sind herzlich willkommen!
 ## 💜 Unterstützung & Spenden
 
 
-Du nutzt AT-Extender regelmäßig und möchtest etwas zurückgeben?
+Du nutzt AT-Extender regelmäßig?
+Wenn du das Projekt unterstützen möchtest, kannst du gerne eine Krypto-Spende senden:
 
-Spenden sind komplett freiwillig – helfen aber, das Projekt langfristig aktiv zu halten und weiterzuentwickeln.
+BTC: bc1q7rddem4wm6ryp3vqtrkxjq427qyy5yuckku90g
 
-Krypto-Spenden:
+ETH: 0xcBa34A1744d3c89301600182938Fca0134b99A43
 
-Bitcoin (BTC): bc1q7rddem4wm6ryp3vqtrkxjq427qyy5yuckku90g
+LTC: ltc1qzlwynlnsrw0j4etffne8f8mmnjep2xdtnv66wa
 
-Ethereum (ETH): 0xcBa34A1744d3c89301600182938Fca0134b99A43
-
-Litecoin (LTC): ltc1qzlwynlnsrw0j4etffne8f8mmnjep2xdtnv66wa
-
-Vielen Dank für deine Unterstützung! 🙌
+🙏 Danke für deinen Support!
 
 ---
 ## 📜 Lizenz
