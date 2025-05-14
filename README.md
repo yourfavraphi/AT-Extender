@@ -170,7 +170,21 @@ curl -X POST "https://api.telegram.org/bot<DEIN_TOKEN>/sendMessage" -d "chat_id=
 Verbesserungen, Fehlerberichte oder Pull Requests sind herzlich willkommen!
 
 ---
+💜 Unterstützung & Spenden
+Du nutzt AT-Extender regelmäßig und möchtest etwas zurückgeben?
+Spenden sind komplett freiwillig – helfen aber, das Projekt langfristig aktiv zu halten und weiterzuentwickeln.
 
+Krypto-Spenden:
+
+Bitcoin (BTC): bc1q7rddem4wm6ryp3vqtrkxjq427qyy5yuckku90g
+
+Ethereum (ETH): 0xcBa34A1744d3c89301600182938Fca0134b99A43
+
+Litecoin (LTC): ltc1qzlwynlnsrw0j4etffne8f8mmnjep2xdtnv66wa
+
+Vielen Dank für deine Unterstützung! 🙌
+
+---
 ## 📜 Lizenz
 
 MIT License – free to use and modify.
