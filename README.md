@@ -12,10 +12,6 @@ Ein vollautomatisiertes Python-Skript zur Überwachung des verfügbaren ALDI TAL
 
 🧑‍💻 Support/Entwickler: @CodyMeal ( https://t.me/CodyMeal )
 
-
----
-
-
 ---
 
 ## ✅ Features
