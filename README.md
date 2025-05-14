@@ -8,7 +8,7 @@ Ein vollautomatisiertes Python-Skript zur Überwachung des verfügbaren ALDI TAL
 
 🔔 Info-Kanal: @ATExtender_infocenter ( https://t.me/ATExtender_infocenter )
 
-👥 Nutzergruppe: @ATExtender_Usergroup ( https://t.me/ATExtender_infocenter )
+👥 Nutzergruppe: @ATExtender_Usergroup ( https://t.me/ATExtender_Usergroup )
 
 🧑‍💻 Support/Entwickler: @CodyMeal ( https://t.me/CodyMeal )
 
