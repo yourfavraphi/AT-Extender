@@ -1,3 +1,5 @@
+Original Repository: https://github.com/Dinobeiser/AT-Extender?tab=readme-ov-file
+
 # 🚀 ALDI TALK Datenvolumen-Überwachung & Auto-Update Bot
 
 Ein vollautomatisiertes Python-Skript zur Überwachung des verfügbaren ALDI TALK Datenvolumens. Bei Unterschreitung von 1 GB wird automatisch ein Nachbuchen versucht und eine Telegram-Benachrichtigung gesendet. Optional mit **Auto-Update**, **Sleep-Modus**, **Telegram-Support** und mehr.
