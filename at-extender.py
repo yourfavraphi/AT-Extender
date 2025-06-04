@@ -20,7 +20,7 @@ UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
 VERSION = "2.0.0"
 REMOTE_VERSION_URL = "https://raw.githubusercontent.com/yourfavraphi/AT-Extender/refs/heads/main/version.txt"
-REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/yourfavraphi/AT-Extender/main/at-extender.py"
+REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/yourfavraphi/AT-Extender/refs/heads/main/at-extender.py"
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0"
 HEADLESS = True
