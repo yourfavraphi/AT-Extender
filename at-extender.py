@@ -18,9 +18,9 @@ LOGIN_URL = "https://login.alditalk-kundenbetreuung.de/signin/XUI/#login/"
 DASHBOARD_URL = "https://www.alditalk-kundenportal.de/portal/auth/buchungsuebersicht/"
 UBERSICHT_URL = "https://www.alditalk-kundenportal.de/portal/auth/uebersicht/"
 
-VERSION = "1.0.9"
-REMOTE_VERSION_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/version.txt"
-REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/Dinobeiser/AT-Extender/main/at-extender.py"
+VERSION = "1.9.9"
+REMOTE_VERSION_URL = "https://raw.githubusercontent.com/yourfavraphi/AT-Extender/main/version.txt"
+REMOTE_SCRIPT_URL = "https://raw.githubusercontent.com/yourfavraphi/AT-Extender/main/at-extender.py"
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0"
 HEADLESS = True
